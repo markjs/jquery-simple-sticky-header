@@ -6,29 +6,27 @@
 
 (function($) {
   return $.fn.simpleStickyHeader = function(options) {
-    var stickyId;
     if (options == null) {
       options = {};
     }
     options = $.extend({
       'offset': 0
-    });
-    stickyId = 0;
+    }, options);
     return $(this).each(function() {
       var $this;
-      stickyId++;
-      $this = $(this).attr('data-sticky-id', stickyId).addClass('simple-static');
+      $this = $(this).addClass('simple-static');
       $this.after($this.clone().removeClass('simple-static').addClass('simple-sticky').hide());
-      return $(window).on('scroll', function() {
+      $(window).on('scroll', function() {
         var $static, $sticky;
-        $static = $(".simple-static[data-sticky-id=" + stickyId + "]");
-        $sticky = $(".simple-sticky[data-sticky-id=" + stickyId + "]");
-        if ($(window).scrollTop() >= $static.position()['top']) {
+        $static = $(".simple-static");
+        $sticky = $(".simple-sticky");
+        if ($(window).scrollTop() >= ($static.position()['top'] - options.offset)) {
           return $sticky.show();
         } else {
           return $sticky.hide();
         }
       });
+      return $(window).trigger('scroll');
     });
   };
 })(jQuery);

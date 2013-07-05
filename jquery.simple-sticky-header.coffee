@@ -8,20 +8,21 @@
   $.fn.simpleStickyHeader = (options = {}) ->
     options = $.extend
       'offset': 0
-
-    stickyId = 0
+    , options
 
     $(this).each ->
-      stickyId++
-      $this = $(this).attr('data-sticky-id', stickyId).addClass('simple-static')
+      $this = $(this).addClass('simple-static')
       $this.after $this.clone().removeClass('simple-static').addClass('simple-sticky').hide()
 
       $(window).on 'scroll', ->
-        $static = $(".simple-static[data-sticky-id=#{stickyId}]")
-        $sticky = $(".simple-sticky[data-sticky-id=#{stickyId}]")
-        if $(window).scrollTop() >= $static.position()['top']
+        $static = $(".simple-static")
+        $sticky = $(".simple-sticky")
+
+        if $(window).scrollTop() >= ($static.position()['top'] - options.offset)
           $sticky.show()
         else
           $sticky.hide()
+
+      $(window).trigger 'scroll'
 
 )(jQuery)
