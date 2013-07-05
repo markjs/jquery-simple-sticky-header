@@ -21,9 +21,15 @@
         $static = $(".simple-static");
         $sticky = $(".simple-sticky");
         if ($(window).scrollTop() >= ($static.position()['top'] - options.offset)) {
-          return $sticky.show();
+          if (!$sticky.is(':visible')) {
+            $sticky.show();
+            return $sticky.trigger('simpleSticky.show', [$sticky, $static]);
+          }
         } else {
-          return $sticky.hide();
+          if ($sticky.is(':visible')) {
+            $sticky.hide();
+            return $sticky.trigger('simpleSticky.hide', [$sticky, $static]);
+          }
         }
       });
       return $(window).trigger('scroll');

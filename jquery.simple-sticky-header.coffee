@@ -19,9 +19,13 @@
         $sticky = $(".simple-sticky")
 
         if $(window).scrollTop() >= ($static.position()['top'] - options.offset)
-          $sticky.show()
+          unless $sticky.is(':visible')
+            $sticky.show()
+            $sticky.trigger('simpleSticky.show', [$sticky, $static])
         else
-          $sticky.hide()
+          if $sticky.is(':visible')
+            $sticky.hide()
+            $sticky.trigger('simpleSticky.hide', [$sticky, $static])
 
       $(window).trigger 'scroll'
 
