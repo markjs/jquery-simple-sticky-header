@@ -6,9 +6,29 @@
 
 (function($) {
   return $.fn.simpleStickyHeader = function(options) {
+    var stickyId;
     if (options == null) {
       options = {};
     }
-    return console.log('welcome to simple sticky header');
+    options = $.extend({
+      'offset': 0
+    });
+    stickyId = 0;
+    return $(this).each(function() {
+      var $this;
+      stickyId++;
+      $this = $(this).attr('data-sticky-id', stickyId).addClass('simple-static');
+      $this.after($this.clone().removeClass('simple-static').addClass('simple-sticky').hide());
+      return $(window).on('scroll', function() {
+        var $static, $sticky;
+        $static = $(".simple-static[data-sticky-id=" + stickyId + "]");
+        $sticky = $(".simple-sticky[data-sticky-id=" + stickyId + "]");
+        if ($(window).scrollTop() >= $static.position()['top']) {
+          return $sticky.show();
+        } else {
+          return $sticky.hide();
+        }
+      });
+    });
   };
 })(jQuery);
