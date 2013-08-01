@@ -10,11 +10,12 @@
       'offset': 0
     , options
 
-    $(this).each ->
+    this.each ->
       $this = $(this).addClass('simple-static')
       $this.after $this.clone().removeClass('simple-static').addClass('simple-sticky').hide()
 
       $(window).on 'scroll', ->
+        return if options.except?()
         $static = $(".simple-static")
         $sticky = $(".simple-sticky")
 
@@ -28,5 +29,7 @@
             $sticky.trigger('simpleSticky.hide', [$sticky, $static])
 
       $(window).trigger 'scroll'
+
+    this
 
 )(jQuery)

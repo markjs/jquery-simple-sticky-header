@@ -12,12 +12,15 @@
     options = $.extend({
       'offset': 0
     }, options);
-    return $(this).each(function() {
+    this.each(function() {
       var $this;
       $this = $(this).addClass('simple-static');
       $this.after($this.clone().removeClass('simple-static').addClass('simple-sticky').hide());
       $(window).on('scroll', function() {
         var $static, $sticky;
+        if (typeof options.except === "function" ? options.except() : void 0) {
+          return;
+        }
         $static = $(".simple-static");
         $sticky = $(".simple-sticky");
         if ($(window).scrollTop() >= ($static.position()['top'] - options.offset)) {
@@ -34,5 +37,6 @@
       });
       return $(window).trigger('scroll');
     });
+    return this;
   };
 })(jQuery);
